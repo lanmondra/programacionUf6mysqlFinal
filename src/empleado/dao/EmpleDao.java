@@ -9,9 +9,9 @@ public interface EmpleDao {
 
     Empleado getEmpleadoPorCodigo(int codigo);
 
-    boolean actualizarEmpleado(Empleado empleado); // Update
+    //void actualizarEmpleado(Empleado empleado); // Update
+    //  void updatePassword(Empleado empleado, String passwordEmple);
+    // void escribirEnDB(Empleado empleado, String employeePassword);
+    boolean actualizarEmpleado(Empleado empleado);
 
-    void actualizarPassword(Empleado empleado);
-
-    void escribirEnDB(Empleado empleado);
 }

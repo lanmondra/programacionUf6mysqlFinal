@@ -72,9 +72,9 @@ public class VistaPedidos {
 //    public static void mensajeBienvenida(Empleado empleado) {
 //        muestraMensaje("Bienvenido " + empleado.getNombre());
 //        System.out.println();
-    //  }
+//      }
     public static void muestraMensaje(String mensaje, Color color) {
-        System.out.println(color + mensaje + Color.DEFAULT);
+        //System.out.println(color + mensaje + Color.DEFAULT);
     }
 
     public static void muestraMensaje(String mensaje) {

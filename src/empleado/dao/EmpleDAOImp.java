@@ -6,20 +6,67 @@ import empleado.dominio.Empleado;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+
 import java.util.List;
-import producto.dao.ProductDAOImp;
-import producto.dominio.Producto;
 
-public class EmpleDAOImp implements EmpleDao {
+/**
+ *
+ * @author miguelmondragon
+ */
+public class EmpleDAOImp implements EmpleDao{
 
-    //
-    List<Empleado> empleados;
+    private List<Empleado> empleados;
 
-    public List<Empleado> leerEmple() {
+    public EmpleDAOImp() {
+
+        List<Empleado> empleList = new ArrayList<Empleado>();
+        String query = "SELECT * FROM empleados";
+        Statement statement;
+        ResultSet result = null;
+        /*
+        Statement statement = null;
+        ResultSet result = null;
+         */
+
+        try {
+            Connection connect = conectionBD.conectar();
+            statement = (Statement) connect.createStatement();
+            result = statement.executeQuery(query);
+        } catch (SQLException e) {
+            System.err.println("error al leer la base de datos");
+        } finally {
+
+            int empleCodigo = 0;
+            String empleNombre = null;
+            String empleApellido = null;
+            String emplePass = null;
+
+            try {
+
+                while (result.next()) {
+                    empleCodigo = result.getInt("e_codigo");
+                    empleNombre = result.getString("e_nombre");
+                    empleApellido = result.getString("e_apellidos");
+                    emplePass = result.getString("e_password");
+
+                    empleList.add(new Empleado(empleCodigo, empleNombre, empleApellido, emplePass));
+                }
+            } catch (SQLException ex) {
+                System.err.println("no se ha conectado con la base de datos");
+            }
+
+        }
+
+        setEmpleados(empleados);
+        System.out.println(this.toString());
+
+    }
+     //@Override
+    public List<Empleado> leerEmpleados() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+     //@Override
     public Empleado getEmpleadoPorCodigo(int codigo) {
         Empleado empleado = null;
         String query = "SELECT * FROM empleados where e_codigo = " + codigo;
@@ -41,76 +88,38 @@ public class EmpleDAOImp implements EmpleDao {
         return empleado;
     }
 
-    public EmpleDAOImp() {
-
-        List<Empleado> empleList = new ArrayList<Empleado>();
-        String query = "SELECT * FROM empleados";
-        Statement statement;
-        ResultSet result = null;
-        /*
-        Statement statement = null;
-        ResultSet result = null;
-         */
-
-        try {
-            Connection connect = conectionBD.conectar();
-            statement = (Statement) connect.createStatement();
-            result = statement.executeQuery(query);
-        } catch (SQLException e) {
-            System.err.println("error al leer la base de datos");
-        } finally {
-
-            int employeeCode = 0;
-            String employeeName = null;
-            String employeeLastName = null;
-            String employeePassword = null;
-
-            try {
-
-                while (result.next()) {
-                    employeeCode = result.getInt("e_codigo");
-                    employeeName = result.getString("e_nombre");
-                    employeeLastName = result.getString("e_apellidos");
-                    employeePassword = result.getString("e_password");
-
-                    empleList.add(new Empleado(employeeCode, employeeName, employeeLastName, employeePassword));
-                }
-            } catch (SQLException ex) {
-                System.err.println("no se ha conectado con la base de datos");
-            }
-
-        }
-
-        setEmpleados(empleados);
-        System.out.println(this.toString());
+     //@Override
+    public boolean actualizarEmpleado(Empleado empleado) {
+        throw new UnsupportedOperationException("Not supported yet.");
 
     }
 
     public List<Empleado> getEmpleados() {
-        return empleados;
+        return this.empleados;
     }
 
-    public void setEmpleados(List<Empleado> empleados) {
-        this.empleados = empleados;
+    public void setEmpleados(List<Empleado> emple) {
+        this.empleados = emple;
     }
 
-    public void actualizarPassword(Empleado empleado, String passwordEmple) {
-
-        List<Empleado> empleList = new ArrayList<Empleado>();
-        empleList.add(empleado);
-
-        for (int i = 0; i < empleList.size(); i++) {
-            if (empleList.get(i).getCodigo() == empleado.getCodigo()) {
-                empleList.get(i).setPassword(passwordEmple);
+    // @Override
+    public void updatePassword(Empleado empleado, String passwordEmple) {
+        
+        List <Empleado>empleadoList = new ArrayList<>();
+        empleadoList.add(empleado);
+        
+        for (int i = 0; i < empleadoList.size(); i++) {
+            if (empleadoList().get(i).getCodigo() == empleado.getCodigo()) {
+                empleadoList.get(i).setPassword(passwordEmple);
             }
-
-
         }
         this.escribirEnDB(empleado, passwordEmple);
         //this.escribirEnArchivo();
     }
 
-    public void escribirEnDB(Empleado empleado, String emplePassword) {
+    //@Override
+    public void escribirEnDB(Empleado empleado, String emplePassword
+    ) {
 
         String query;
         Statement statement = null;
@@ -118,7 +127,7 @@ public class EmpleDAOImp implements EmpleDao {
 
         try {
             query = "UPDATE empleados SET e_password = \""
-                    + empleado.getPassword() + "\" WHERE e_codigo = "
+                    + emplePassword + "\" WHERE e_codigo = "
                     + empleado.getCodigo() + ";";
             Connection connect = conectionBD.conectar();
             statement = (Statement) connect.createStatement();
@@ -126,31 +135,9 @@ public class EmpleDAOImp implements EmpleDao {
 
         } catch (SQLException e) {
             System.err.println("problemas con la base de datos.");
+        } finally {
+            this.empleados = (new EmpleDAOImp()).getEmpleados();
         }
-//        finally {
-//            this.empleados = (new EmpleDAOImp()).getEmpleados();
-//        }
-
     }
-
-   // @Override
-    public boolean actualizarEmpleado(Empleado empleado) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Empleado> leerEmpleados() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void actualizarPassword(Empleado empleado) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void escribirEnDB(Empleado empleado) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
 }

@@ -4,17 +4,12 @@ import app.conection.conectionBD;
 
 import empleado.dominio.Empleado;
 import factura.Pedido;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import producto.dao.ProductDAOImp;
 
 import producto.dominio.Producto;
@@ -33,45 +28,11 @@ public class GestionProductos {
     ArrayList<Producto> ProductList = new ArrayList<Producto>();
     private List<Producto> productos = new ArrayList<Producto>();
 
-//    public GestionProductos(Empleado empleadoLogado) {
-//
-//        Path path = Paths.get(this.archivoPorduc);
-//
-//        List<Producto> productList = new ArrayList<Producto>();
-//
-//        try ( var reader = Files.newBufferedReader(path)) {
-//
-//            int productCode = 0;
-//            String productName = null;
-//            String productDescription = null;
-//            double nuevoPrecio = 0.0;
-//
-//            while (reader.readLine() != null) {
-//
-//                reader.readLine();
-//                productCode = Integer.parseInt(reader.readLine().trim());
-//
-//                reader.readLine();
-//                productName = reader.readLine().trim();
-//
-//                reader.readLine();
-//                productDescription = reader.readLine().trim();
-//
-//                reader.readLine();
-//                nuevoPrecio = Double.parseDouble(reader.readLine().trim().replace(',', '.'));
-//
-//                productList.add(new Producto(productCode, productName, productDescription, nuevoPrecio));
-//
-//            }
-//
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//        }
-//
-//        setProductos(productList);
-//        this.empleadoAuten = empleadoLogado;
-//
-//    }
+    public GestionProductos(Empleado empleadoAuten) {
+        this.empleadoAuten = empleadoAuten;
+    }
+
+    
     public List<Producto> readProductos() {
 
         List<Producto> productos = new ArrayList<>();
@@ -266,7 +227,6 @@ public class GestionProductos {
 
         var newProduct = new ProductDAOImp();
         newProduct.actualizarPrecio(codigoEntrada, nuevoPrecio);
-       
 
         System.out.println(Color.GREEN + "Precio cambiado exitosamente" + Color.DEFAULT);
 
@@ -278,6 +238,7 @@ public class GestionProductos {
     }
 
     void imprimirProductos() {
+
         System.out.println(Color.BLUE + "\n************************************************" + Color.DEFAULT);
         for (Producto producto : losProductos) {
             System.out.printf("Codigo:\t\t%d%nNombre:\t\t%s%nDescripción:\t%s%nPrecio\t\t%.2f%n%n", producto.getCodigo(),

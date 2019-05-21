@@ -46,6 +46,8 @@ public class GestionTienda {
         }
 
         empleadoAutenticado = gestionaEmpleados.getEmpleadoAutenticado();
+        //VistaTienda.mensajeBienvenida(empleadoAutenticado);
+        //empleadoAutenticado = gestionaEmpleados.getEmpleadoAutenticado();
         // VistaTienda.mensajeBienvenida(empleadoAutenticado);
         System.out.println("  Has iniciado sesión como " + empleadoAutenticado.getNombre() + " " + empleadoAutenticado.getApellidos() + "\n");
 

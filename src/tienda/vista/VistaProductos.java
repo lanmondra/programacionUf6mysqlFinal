@@ -12,14 +12,14 @@ import tienda.control.MenuProductos;
 import util.Color;
 
 public class VistaProductos {
-
-    Empleado empleadoAuten;
-
+    
+    Empleado empleadoAutentificado;
+    
     public VistaProductos(Empleado empleadoLogado) {
-        this.empleadoAuten = empleadoLogado;
-
+        this.empleadoAutentificado = empleadoLogado;
+        
     }
-
+    
     public static MenuProductos opcionDesdeMenuProductos(Empleado empleado) {
         borrarPantalla();
         System.out.println(Color.BLUE + "--------Menú productos ------------" + Color.DEFAULT);
@@ -28,52 +28,52 @@ public class VistaProductos {
         System.out.println("1.3 ._Modificar codigo de Producto");
         System.out.println("1.4 ._Terminar ");
         System.out.println(Color.BLUE + "------------------------------------" + Color.DEFAULT);
-
+        
         int opcion = pedirOpcionEnRango(1, 4);
-
+        
         MenuProductos menu = null;
-
+        
         switch (opcion) {
             case 1:
                 menu = MenuProductos.MODIFICAR_NOMBRE;
-                GestionProductos g = new GestionProductos();
+                GestionProductos g = new GestionProductos(empleado);
                 g.readProductos();
                 g.actualizarNombre();
-
+                
                 break;
             case 2:
                 menu = MenuProductos.MODIFICAR_PRECIO;
-
-                GestionProductos gestiona = new GestionProductos();
+                
+                GestionProductos gestiona = new GestionProductos(empleado);
                 gestiona.readProductos();
                 gestiona.actualizarPrecio();
                 break;
             case 3:
                 menu = MenuProductos.MODIFICAR_CODIGO;
-                GestionProductos gestion = new GestionProductos();
+                GestionProductos gestion = new GestionProductos(empleado);
                 gestion.readProductos();
                 gestion.actualizarCodigo();
                 break;
             case 4:
-//                menu = MenuProductos.SALIR;
-                System.out.println(empleado.getNombre());
+                menu = MenuProductos.SALIR;
+                //System.out.println(empleado.getNombre());
                 GestionTienda gestionTienda = new GestionTienda();
-
+                
                 gestionTienda.menu(empleado);
-
+                
                 break;
         }
-
+        
         return menu;
-
+        
     }
-
+    
     private static int pedirOpcionEnRango(int min, int max) {
-
+        
         Scanner leerTeclado = new Scanner(System.in);
         int opcion = 0;
         boolean hayError = true;
-
+        
         while (hayError) {
             System.out.print("Seleccione una opción: ");
             if (leerTeclado.hasNextInt()) {
@@ -87,26 +87,26 @@ public class VistaProductos {
                 leerTeclado.next();
             }
         }
-
+        
         return opcion;
     }
-
+    
     public static void mensajeBienvenida(Empleado empleado) {
         muestraMensaje("Bienvenido " + empleado.getNombre());
         System.out.println();
     }
-
+    
     public static void muestraMensaje(String mensaje, Color color) {
         System.out.println(color + mensaje + Color.DEFAULT);
     }
-
+    
     public static void muestraMensaje(String mensaje) {
         muestraMensaje(mensaje, Color.DEFAULT);
     }
-
+    
     private static void borrarPantalla() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
-
+    
 }
